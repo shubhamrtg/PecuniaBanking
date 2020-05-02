@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cg.banking.exceptions.AgeException;
 import com.cg.banking.exceptions.CustomerException;
+import com.cg.banking.exceptions.InvalidMailException;
 import com.cg.banking.service.CustomerService;
 import com.cg.banking.service.MailService;
 import com.cg.banking.util.AccountConstants;
@@ -30,16 +31,14 @@ public class CustomerRestController {
 	
 	@CrossOrigin
 	@PostMapping("/addcustomer")
-	public AccountMessage addCustomer(@RequestBody CustomerForm custForm) throws CustomerException, AgeException {
+	public AccountMessage addCustomer(@RequestBody CustomerForm custForm) throws CustomerException, AgeException, InvalidMailException {
 		//try {
 			String custID = service.addCustomer(custForm);
-			//String x=mailService.sendMail();
-			//System.out.println(x);
 			String responseFromMail=mailService.sendMail(custForm.getEmail(),custID,custForm.getPassword());
-			System.out.println(responseFromMail);
+			
 		    return new AccountMessage(AccountConstants.CUSTOMER_CREATED+ AccountConstants.GENERATED_CUSTOMER+ custID);
-	   // }catch(CustomerException  ex) {  //
-			//throw new CustomerException(ex.getMessage()); //"Customer ID already exists"
+	   // }catch(DataIntegrityViolationException  ex) {  //
+		//	throw new CustomerException("Customer ID already exists"); //
 		//}
 	}
 	

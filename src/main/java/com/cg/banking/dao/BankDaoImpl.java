@@ -11,9 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.cg.banking.entity.AccTransaction;
 import com.cg.banking.entity.Account;
-import com.cg.banking.entity.Branch;
 import com.cg.banking.entity.Customer;
-import com.cg.banking.entity.LoanRequest;
 
 @Repository
 public class BankDaoImpl implements BankDao{
@@ -93,61 +91,10 @@ public class BankDaoImpl implements BankDao{
 		return query.getResultList();
 	}
 
-	@Override
-	public boolean loanRequest(LoanRequest req) {
-		em.persist(req);
-		return true;
-	}
-	@Override
-	public LoanRequest getLoanRequestStatus(String loanReqId) {
-		
-		return em.find(LoanRequest.class, loanReqId);
-	}
+	
 
-	@Override
-	public List<LoanRequest> getLoanRequest(String customerId) {
-		String jpql ="from LoanRequest lr inner join fetch lr.customer c where c.customerId=:custid";
-		TypedQuery<LoanRequest> query = em.createQuery(jpql, LoanRequest.class);
-		query.setParameter("custid", customerId);
-		return query.getResultList();
-	}
 
-	@Override
-	public Branch viewBranch(String branchCode) {
-		
-		return em.find(Branch.class, branchCode);
-	}
-
-	@Override
-	public int countLoansForCustomer(String custID) {
-		String jpql ="select count(loanRequestId) from LoanRequest r inner join fetch r.customer.customerId=:custId";
-		TypedQuery<Integer> query = em.createQuery(jpql,Integer.class);
-		query.setParameter("custId", custID);
-		return query.getSingleResult();
-	}
-
-	@Override
-	public List<LoanRequest> getLoanRequestByStatus(String reqStatus) {
-		String jpql ="from LoanRequest lr inner join fetch lr.customer c where lr.reqStatus=:reqstatus";
-		TypedQuery<LoanRequest> query = em.createQuery(jpql, LoanRequest.class);
-		query.setParameter("reqstatus", reqStatus);
-		return query.getResultList();
-	}
-
-	@Override
-	public int checkExistsLoanForCustomer(String custId) {
-		String jpql ="select count(accountId) from Account a inner join fetch a.customer c where c.customerId=:custId and a.accountName like :loan";
-		TypedQuery<Integer> query = em.createQuery(jpql,Integer.class);
-		query.setParameter("custId", custId);
-		query.setParameter("loan", "%loan%");
-		return query.getSingleResult();
-	}
-
-	@Override
-	public boolean editLoanRequest(LoanRequest req) {
-		em.merge(req);
-		return true;
-	}
+	
 
 }
 

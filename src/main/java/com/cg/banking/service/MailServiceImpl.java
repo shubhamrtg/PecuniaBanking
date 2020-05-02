@@ -1,5 +1,6 @@
 package com.cg.banking.service;
 
+import com.cg.banking.exceptions.InvalidMailException;
 import com.cg.banking.util.MailConstants;
 
 import javax.mail.Message;
@@ -38,7 +39,7 @@ public class MailServiceImpl implements MailService{
 
 
 	@Override
-	public String sendMail(String toEmail,String customerId,String custpassword) {
+	public String sendMail(String toEmail,String customerId,String custpassword) throws InvalidMailException {
 		System.out.println("Inside Send Mail function()");
 		try {
 			Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
@@ -57,7 +58,9 @@ public class MailServiceImpl implements MailService{
 			return MailConstants.MAIL_SUCCESS;
 		} catch (MessagingException ex) {
 			logger.error(ex.getMessage());
-			return MailConstants.MAIL_FAILURE;
+			throw new InvalidMailException("Invalid mail");
+			//logger.error(ex.getMessage());
+			//return MailConstants.MAIL_FAILURE;
 		}
 
 	}

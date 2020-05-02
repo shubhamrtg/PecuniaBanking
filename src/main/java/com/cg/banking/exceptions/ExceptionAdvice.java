@@ -18,10 +18,9 @@ import com.cg.banking.util.AccountConstants;
 @RestControllerAdvice
 public class ExceptionAdvice {
 	
-	@ExceptionHandler(value= {ConstraintViolationException.class})
+	@ExceptionHandler(value= {DataIntegrityViolationException.class})
 	@ResponseStatus(code=HttpStatus.BAD_REQUEST)
 	public ErrorInfo handlerException1(ConstraintViolationException ex) {
-		System.out.println("Constraint name "+ex.getConstraintName());
 		if(ex.getConstraintName().equals(AccountConstants.aadharConstraint))  //
 			return new ErrorInfo("Already registered with this Aadhar Number.");
 		
@@ -40,6 +39,12 @@ public class ExceptionAdvice {
 	@ExceptionHandler(value= {AgeException.class})
 	@ResponseStatus(code=HttpStatus.BAD_REQUEST,reason="Minimun age must be 18.")
 	public void handlerException2(Exception ex) {
+		
+	}
+	
+	@ExceptionHandler(value= {InvalidMailException.class})
+	@ResponseStatus(code=HttpStatus.BAD_REQUEST,reason="Invalid email.")
+	public void handlerException3(Exception ex) {
 		
 	}
 	

@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cg.banking.dao.BankDao;
 import com.cg.banking.dto.CustomerForm;
-import com.cg.banking.entity.Branch;
 import com.cg.banking.entity.Customer;
 import com.cg.banking.exceptions.AgeException;
 import com.cg.banking.exceptions.CustomerException;
@@ -29,7 +28,6 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public String addCustomer(CustomerForm custForm) throws AgeException {
 		Customer cust = new Customer();
-		//Branch branch = dao.viewBranch(custForm.getBranchCode());
 		LocalDateTime now = LocalDateTime.now();
 		LocalDate now1=LocalDate.now();
 		String custID = AccountConstants.EMPTY+ now.getYear()+ now.getMonthValue()+now.getDayOfMonth()+now.getHour()+now.getMinute()+now.getSecond();
@@ -48,7 +46,6 @@ public class CustomerServiceImpl implements CustomerService {
 		
 		if(age>=18) {
 			dao.addCustomer(cust);
-			//System.out.println(mailService.sendMail(custForm.getEmail()));
 			return custID;
 		}
 		else {
@@ -69,7 +66,6 @@ public class CustomerServiceImpl implements CustomerService {
 		if(customer == null)
 			throw new CustomerException(AccountConstants.INVALID_CUSTOMER);
 		else{
-			//System.out.println(mailService.sendMail());
 			return customer;
 		}
 	}
